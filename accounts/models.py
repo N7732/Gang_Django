@@ -1,14 +1,14 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
-class Custom_user(models.Model):
-    user_type={
-        ("Vendor","vendor"),
-        ('Customer',"customer"),
-    }
-    user_type=models.CharField(max_length=10, choices=user_type)
-    phone=models.IntegerField(max_length=15)
-    location=models.CharField(max_length=50)
-    def __str__(self):
-        return f"{self.user_type} and {self.location}"
-    
+class Custom_user(AbstractUser):
+    USER_TYPES = [
+        ("vendor", "Vendor"),
+        ("customer", "Customer"),
+    ]
+
+    user_type = models.CharField(max_length=10, choices=USER_TYPES)
+    phone = models.CharField(max_length=15)
+    location = models.CharField(max_length=50)
+
+    REQUIRED_FIELDS = ['user_type', 'phone', 'location']
