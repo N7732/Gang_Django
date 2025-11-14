@@ -4,7 +4,7 @@ from products.models import Product
 
 # Create your models here.
 class Order(models.Model):
-    Customer_details=models.ForeignKey(Custom_user)
+    Customer_details=models.ForeignKey(Custom_user, on_delete=models.CASCADE)
     total=models.IntegerField(max_length=10)
     status={
         ("Paid","paid"),
@@ -18,8 +18,8 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.Customer_details} and {self.status} and also{self.total}"
 class OrderItem(models.Model):
-    Order=models.ForeignKey(Order)
-    product=models.ForeignKey(Product)
+    Order=models.ForeignKey(Order, on_delete=models.CASCADE)
+    product=models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity=models.IntegerField(max_length=20)
     price=models.DecimalField(max_digits=5,decimal_places=2)
 
