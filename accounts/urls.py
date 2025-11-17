@@ -1,4 +1,5 @@
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('', views.custom_form, name='custom_form'),]
+    path('', views.custom_form, name='custom_form'),
+    path('login/', views.Login, name='login'),]
