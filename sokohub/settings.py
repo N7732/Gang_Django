@@ -127,3 +127,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # static
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+AUTH_USER_MODEL = 'accounts.Custom_user'
