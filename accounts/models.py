@@ -6,7 +6,7 @@ class Custom_user(models.Model):
         ("Vendor","vendor"),
         ('Customer',"customer"),
     }
-    user_type=models.CharField(max_length=10, choices=user_type)
+    user_type=models.CharField(max_length=10, choices=user_type,default='customer')
     phone=models.IntegerField(max_length=15)
     location=models.CharField(max_length=50)
     def __str__(self):
