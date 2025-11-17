@@ -128,3 +128,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'accounts.Custom_user'
+
+
+
+#Email Verification settings
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER="oliviernshimyumuremyi4@gmail.com"
+EMAIL_HOST_PASSWORD="pilc ddua amis zapq"
+# Token expiration = 300 seconds (5 minutes)
+PASSWORD_RESET_TIMEOUT = 180
