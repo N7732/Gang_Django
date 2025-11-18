@@ -1,7 +1,17 @@
 from django.urls import path
 from . import views
+from .views import CustomLoginView
+
 urlpatterns = [
-    path('', views.custom_form, name='custom_form'),
-    path('login/', views.Login, name='login'),
-    path('verify-code/', views.verfication_login_code, name='verify_code'),
-    ]
+    path('', CustomLoginView.as_view(), name='home'),  # Homepage → Login page
+    path('login/', CustomLoginView.as_view(), name='login'),
+
+    path('logout/', views.logout_view, name='logout'),
+
+    path('register/', views.register, name='register'),
+    path('vendor/', views.vendor_form, name='vendor_form'),
+
+
+    path('vendor-dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
+    path('products/', views.product_list, name='product_list'),
+]

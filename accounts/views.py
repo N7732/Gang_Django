@@ -1,63 +1,74 @@
 from django.shortcuts import render, redirect
-from .form import VendorExtraForm, account
-from django.contrib.auth import authenticate, login
-import random
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from django.conf import settings
+from django.contrib.auth import login, logout
+from django.contrib.auth.views import LoginView
+from .forms import CustomUserCreationForm, VendorExtraForm
+from accounts.decorators import vendor_required, customer_required
 
 
-def custom_form(request):
+# --------------------------
+# Register view
+# --------------------------
+def register(request):
     if request.method == 'POST':
-        form = account(request.POST)
-
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            form.save()   
+            user = form.save()
+            login(request, user)
             
-
+            if user.user_type == 'vendor':
+                return redirect('vendor_form')  # redirect to vendor extra form
+            else:
+                return redirect('product_list')
     else:
-        form = account()
-    return render(request, 'main.html', {'form': form})
+        form = CustomUserCreationForm()
+    
+    return render(request, 'accounts/register.html', {'form': form})
 
-def Vendor_Form(request):
+
+# --------------------------
+# Login view
+# --------------------------
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+
+
+# --------------------------
+# Logout view
+# --------------------------
+def logout_view(request):
+    logout(request)
+    return redirect('home')
+
+
+# --------------------------
+# Vendor extra form view
+# --------------------------
+@vendor_required
+def vendor_form(request):
     if request.method == 'POST':
         form = VendorExtraForm(request.POST)
-
         if form.is_valid():
-            form.save()   
-            
-
+            vendor = form.save(commit=False)
+            vendor.user = request.user
+            vendor.save()
+            return redirect('vendor_dashboard')
     else:
         form = VendorExtraForm()
-    return render(request, 'vendor_form.html', {'form': form})
+    
+    return render(request, 'accounts/vendor_form.html', {'form': form})
 
 
-def Login(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
+# --------------------------
+# Vendor dashboard (protected)
+# --------------------------
+@vendor_required
+def vendor_dashboard(request):
+    return render(request, 'accounts/vendor_dashboard.html')
 
-        if user is not None:
-            login(request, user)
-            return redirect('verfication_login_code') # Redirect to a success page.
-        else:
-            return render(request, 'login.html', {'error': 'Invalid username or password.'})
-    return render(request, 'login.html')
 
-def verfication_login_code(request):
-    Code=random.randint(1000,9999)
-    if request.method == 'POST':
-         input_code=request.POST.get('code')
-         if str(Code)==input_code:
-            email_body = render_to_string("Verification.html",{'code': Code,})
-            email_message = EmailMessage(
-            'Verification Code',
-            email_body,
-            settings.EMAIL_HOST_USER,
-            [Code]
-        )
-            return redirect('Home')
-         else:
-                return render(request, 'verfication_login_code.html', {'error': 'Invalid code. Please try again.'})
-    return render(request, 'verfication_login_code.html')
+# --------------------------
+# Product list (customer only)
+# --------------------------
+@customer_required
+def product_list(request):
+    return render(request, 'product_list.html')

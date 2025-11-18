@@ -53,11 +53,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'sokohub.urls'
+USERNAME_FIELD = 'email'
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"templates"],
+        'DIRS': [BASE_DIR/'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,7 +129,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # static
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-AUTH_USER_MODEL = 'accounts.Custom_user'
+# settings.py
+AUTH_USER_MODEL = 'accounts.CustomUser'
+  # Match the class name exactly
+
 
 
 
@@ -140,3 +145,6 @@ EMAIL_HOST_USER="oliviernshimyumuremyi4@gmail.com"
 EMAIL_HOST_PASSWORD="pilc ddua amis zapq"
 # Token expiration = 300 seconds (5 minutes)
 PASSWORD_RESET_TIMEOUT = 180
+LOGIN_REDIRECT_URL = 'product_list'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'

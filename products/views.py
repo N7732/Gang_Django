@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from accounts.Decorator import vendor_required
+from accounts.decorators import vendor_required
 from orders.models import OrderItem
 from .models import Product
 from .form import ProductForm  

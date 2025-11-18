@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Custom_user, Vendor
+from .models import CustomUser, Vendor  # <-- use CustomUser, not Custom_user
 
+# Register CustomUser
+admin.site.register(CustomUser)
 
-# Register your models here.
-admin.site.register(Custom_user)
+# Register Vendor
 @admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
-    list_display = ("company_name" "status")
+    list_display = ("company_name", "status")  # <-- comma fixes the tuple
     list_filter = ("status",)
