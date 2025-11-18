@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .form import account
+from .form import VendorExtraForm, account
 from django.contrib.auth import authenticate, login
 import random
 from django.template.loader import render_to_string
@@ -18,6 +18,19 @@ def custom_form(request):
     else:
         form = account()
     return render(request, 'main.html', {'form': form})
+
+def Vendor_Form(request):
+    if request.method == 'POST':
+        form = VendorExtraForm(request.POST)
+
+        if form.is_valid():
+            form.save()   
+            
+
+    else:
+        form = VendorExtraForm()
+    return render(request, 'vendor_form.html', {'form': form})
+
 
 def Login(request):
     if request.method == 'POST':
